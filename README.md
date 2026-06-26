@@ -265,18 +265,7 @@ Optional variables are listed in `.env.example` for teams that want to add LLM-b
 
 See `MODELS.md` for details.
 
-## Deployment notes
 
-The app binds to `0.0.0.0:8000` in Docker and is suitable for Render, Railway, Fly.io, EC2, Poridhi VM, or any similar service that can run a Python web API.
-
-For a live endpoint submission, the judge should be able to call:
-
-```text
-GET https://your-domain/health
-POST https://your-domain/analyze-ticket
-```
-
-No login or dashboard access is required.
 
 ## Assumptions
 
