@@ -10,8 +10,8 @@ router = APIRouter()
 def root():
     return {
         "message": "QueueStorm Investigator API is running",
-        "docs": "/docs",
-        "health": "/health"
+        "docs": "https://queuestorm-investigator-f1k2.onrender.com/docs",
+        "health": "https://queuestorm-investigator-f1k2.onrender.com/health"
     }
 
 @router.get("/health")
