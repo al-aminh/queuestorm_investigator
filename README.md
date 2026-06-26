@@ -4,10 +4,6 @@ QueueStorm Investigator is a hackathon-grade FastAPI service for the SUST CSE Ca
 
 The implementation is intentionally deterministic by default. It uses rule-based reasoning for transaction matching, classification, evidence verdicts, routing, severity, escalation, and safety. No LLM or external API is required to run or score the project.
 
-## Live demo
-
-Judge/demo endpoint: https://queuestorm-investigator-f1k2.onrender.com
-
 ## Why this approach
 
 The challenge rewards evidence reasoning, safety, schema correctness, reliability, and reproducibility. A deterministic service is fast, cheap, explainable, and stable under hidden tests. Optional LLM support is documented through environment variables, but disabled by default because the core financial-support decisions must not depend on a probabilistic text generator.
