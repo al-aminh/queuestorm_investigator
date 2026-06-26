@@ -168,6 +168,89 @@ Then open:
 curl http://localhost:8000/health
 ```
 
+## Live demo (Render)
+
+The service is deployed on Render and can be tested without any local setup.
+
+Base URL:
+
+```
+https://queuestorm-investigator-f1k2.onrender.com
+```
+
+Health check:
+
+```bash
+curl https://queuestorm-investigator-f1k2.onrender.com/health
+```
+
+Expected response:
+
+```json
+{"status":"ok"}
+```
+
+Analyze a ticket against the live API:
+
+```bash
+curl -X POST https://queuestorm-investigator-f1k2.onrender.com/analyze-ticket \
+  -H "Content-Type: application/json" \
+  -d @samples/sample_input.json
+```
+
+Open the auto-generated docs (Swagger UI) at:
+
+```
+https://queuestorm-investigator-f1k2.onrender.com/docs
+```
+
+> Note: Render's free tier spins the service down after periods of inactivity, so the first request after idle may take 30–60 seconds to respond while the instance wakes up.
+
+### Deployment procedure (Render)
+
+The Render service is configured as a single Docker web service built from the repository's `Dockerfile` and `docker-compose.yml`. The steps below document the procedure used to deploy and keep the live demo running.
+
+1. **Prepare the repo**
+   - Make sure `Dockerfile`, `docker-compose.yml`, `requirements.txt`, and `app/` are committed to the GitHub repo `al-aminh/queuestorm_investigator` on the `main` branch.
+   - Confirm `Dockerfile` exposes port `8000` (matches `docker-compose.yml`'s `"8000:8000"` mapping).
+
+2. **Create the Render service**
+   - Go to <https://dashboard.render.com/> and sign in.
+   - Click **New +** → **Web Service**.
+   - Connect the `al-aminh/queuestorm_investigator` GitHub repo.
+   - Choose **Docker** as the runtime (Render autodetects the `Dockerfile`).
+
+3. **Configure the service**
+   - **Name**: `queuestorm-investigator`
+   - **Region**: pick the closest region (e.g. `Oregon` or `Singapore`).
+   - **Branch**: `main`
+   - **Instance type**: `Free`
+   - **Health check path**: `/health`
+   - **Port**: `8000`
+
+4. **Set environment variables** (Render dashboard → *Environment*)
+
+   ```env
+   APP_ENV=production
+   USE_LLM=false
+   REQUEST_TIMEOUT_SECONDS=25
+   ```
+
+   These match `docker-compose.yml` and `.env.example`. No secrets are required for the deterministic build.
+
+5. **Deploy**
+   - Click **Create Web Service**. Render builds the Docker image from the `Dockerfile` and starts the container on port `8000`.
+   - Wait for the deploy log to show `Application startup complete` and the health check to pass.
+
+6. **Verify**
+   - Open `https://queuestorm-investigator-f1k2.onrender.com/health` and confirm `{"status":"ok"}`.
+   - Hit `https://queuestorm-investigator-f1k2.onrender.com/analyze-ticket` with the sample payload in `samples/sample_input.json`.
+
+7. **Updating the live demo**
+   - Push changes to `main` on GitHub.
+   - Render auto-builds and redeploys the Docker image. Watch the *Events* tab for the new deploy and the *Logs* tab for `Application startup complete`.
+   - If a breaking change is shipped, run the local tests first with `pytest -q` (current baseline: `26 passed`).
+
 ## Test command
 
 ```bash
