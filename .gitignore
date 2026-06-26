@@ -1,0 +1,34 @@
+`__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.DS_Store
+*.log
+
+# Docker
+Dockerfile
+docker-compose.yml
+.docker/
+docker-compose.override.yml
+.dockerignore
+
+# Docs and samples
+docs/
+samples/
