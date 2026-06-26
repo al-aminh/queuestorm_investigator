@@ -6,6 +6,13 @@ from app.schemas.response import AnalyzeTicketResponse
 
 router = APIRouter()
 
+@router.get("/")
+def root():
+    return {
+        "message": "QueueStorm Investigator API is running",
+        "docs": "/docs",
+        "health": "/health"
+    }
 
 @router.get("/health")
 def health() -> dict[str, str]:
